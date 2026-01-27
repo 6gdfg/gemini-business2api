@@ -19,12 +19,14 @@ class GPTMailClient:
         proxy: str = "",
         verify_ssl: bool = True,
         api_key: str = "",
+        domain: str = "",
         log_callback=None,
     ) -> None:
         self.base_url = (base_url or "").rstrip("/")
         self.verify_ssl = verify_ssl
         self.proxy_url = (proxy or "").strip()
         self.api_key = (api_key or "").strip()
+        self.domain = (domain or "").strip()
         self.log_callback = log_callback
 
         self.email: Optional[str] = None
@@ -81,8 +83,10 @@ class GPTMailClient:
         prefix = f"t{timestamp}{rand}"
 
         payload: Dict[str, Any] = {"prefix": prefix}
-        if domain:
-            payload["domain"] = domain
+        # 优先使用传入的 domain，其次使用配置的 domain
+        effective_domain = domain or self.domain
+        if effective_domain:
+            payload["domain"] = effective_domain
 
         url = f"{self.base_url}/api/generate-email"
         try:

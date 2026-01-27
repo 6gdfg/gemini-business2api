@@ -47,6 +47,7 @@ def create_temp_mail_client(
             api_key=config.basic.gptmail_api_key,
             proxy=proxy,
             verify_ssl=config.basic.gptmail_verify_ssl,
+            domain=domain or config.basic.gptmail_domain,
             log_callback=log_cb,
         )
 

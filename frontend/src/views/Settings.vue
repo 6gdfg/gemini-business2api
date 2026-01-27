@@ -208,6 +208,13 @@
                     class="w-full rounded-2xl border border-input bg-background px-3 py-2 text-sm"
                     placeholder="X-API-Key"
                   />
+                  <label class="block text-xs text-muted-foreground">GPTMail 邮箱域名（可选）</label>
+                  <input
+                    v-model="localSettings.basic.gptmail_domain"
+                    type="text"
+                    class="w-full rounded-2xl border border-input bg-background px-3 py-2 text-sm"
+                    placeholder="留空则随机选择"
+                  />
                 </template>
 
                 <div class="flex items-center justify-between gap-2 text-xs text-muted-foreground">
@@ -458,6 +465,9 @@ watch(settings, (value) => {
     ? next.basic.gptmail_api_key
     : ''
   next.basic.gptmail_verify_ssl = next.basic.gptmail_verify_ssl ?? true
+  next.basic.gptmail_domain = typeof next.basic.gptmail_domain === 'string'
+    ? next.basic.gptmail_domain
+    : ''
   next.retry = next.retry || {}
   next.retry.auto_refresh_accounts_seconds = Number.isFinite(next.retry.auto_refresh_accounts_seconds)
     ? next.retry.auto_refresh_accounts_seconds

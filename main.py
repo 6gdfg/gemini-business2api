@@ -1289,6 +1289,13 @@ async def admin_delete_account(request: Request, account_id: str):
 async def admin_bulk_delete_accounts(request: Request, account_ids: list[str]):
     """批量删除账户，单次最多50个"""
     global multi_account_mgr
+
+    # 数量限制验证
+    if len(account_ids) > 50:
+        raise HTTPException(400, f"单次最多删除50个账户，当前请求 {len(account_ids)} 个")
+    if not account_ids:
+        raise HTTPException(400, "账户ID列表不能为空")
+
     try:
         multi_account_mgr, success_count, errors = _bulk_delete_accounts(
             account_ids,
